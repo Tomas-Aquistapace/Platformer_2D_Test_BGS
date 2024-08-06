@@ -87,16 +87,24 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
         else
         {
-            InventorySlotView slot = eventData.pointerCurrentRaycast.gameObject.GetComponent<InventorySlotView>();
-
-            if(slot != null)
+            if (eventData.pointerCurrentRaycast.gameObject == null)
             {
-                heldSlot.RemoveItem();
-                heldSlot.SetItem(slot.ItemConfig);
                 heldSlot = null;
-
-                slot.SetItem(heldItem);
                 heldItem = null;
+            }
+            else
+            {
+                InventorySlotView slot = eventData.pointerCurrentRaycast.gameObject.GetComponent<InventorySlotView>();
+
+                if (slot != null)
+                {
+                    heldSlot.RemoveItem();
+                    heldSlot.SetItem(slot.ItemConfig);
+                    heldSlot = null;
+
+                    slot.SetItem(heldItem);
+                    heldItem = null;
+                }
             }
 
             dragDropItemView.ClearImage();
