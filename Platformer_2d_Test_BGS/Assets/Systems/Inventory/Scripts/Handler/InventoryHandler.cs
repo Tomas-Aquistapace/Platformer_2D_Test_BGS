@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -14,6 +13,7 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     [Header("TEST DATA")]
     [SerializeField] private ItemConfig testItemConfig = null;
+    [SerializeField] private ItemConfig testItemCoffeConfig = null;
     [SerializeField] private ItemConfig testItemCupConfig = null;
     [Space]
     [SerializeField] private float pressDetection = 0.3f;
@@ -41,8 +41,10 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
 
         itemViews[2].SetItem(testItemConfig);
-        itemViews[4].SetItem(testItemConfig);
+        itemViews[4].SetItem(testItemCoffeConfig);
         itemViews[10].SetItem(testItemCupConfig);
+
+        tooltipView.Configure(UseItem);
     }
 
     private void Update()
@@ -75,14 +77,14 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     {
         onPointerUp = true;
 
-        if(heldItem == null || eventData.button != PointerEventData.InputButton.Left)
+        if(heldItem == null || heldSlot == null || eventData.button != PointerEventData.InputButton.Left)
         {
             return;
         }
 
         if(pointerTime < pressDetection)
         {
-            tooltipView.SetData(heldItem.Icon, heldItem.ItemName, heldItem.ItemDescription);
+            tooltipView.SetData(heldSlot);
             heldItem = null;
         }
         else
@@ -113,7 +115,10 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     #endregion
 
     #region PUBLIC_METHODS
-
+    private void UseItem(InventorySlotView inventorySlotView)
+    {
+        inventorySlotView.RemoveItem();
+    }
     #endregion
 
     #region PRIVATE_METHODS

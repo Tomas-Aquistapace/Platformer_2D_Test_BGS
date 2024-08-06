@@ -2,32 +2,58 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using TMPro;
+using System;
 
 public class TooltipView : MonoBehaviour
 {
     #region EXPOSED_FIELDS
     [SerializeField] private Image iconPreview = null;
     [SerializeField] private TextMeshProUGUI nameText = null;
+    [SerializeField] private TextMeshProUGUI typeText = null;
     [SerializeField] private TextMeshProUGUI descriptionText = null;
+    [Space]
+    [SerializeField] private Button useItemButton = null;
+    #endregion
+
+    #region PRIVATE_FIELDS
+    private InventorySlotView heldSlot = null;
     #endregion
 
     #region PUBLIC_METHODS
-    public void SetData(Sprite image, string name, string description)
+    public void Configure(Action<InventorySlotView> onUseItem)
     {
-        iconPreview.sprite = image;
-        nameText.text = name;
-        descriptionText.text = description;
+        useItemButton.onClick.AddListener(() =>
+        {
+            onUseItem.Invoke(heldSlot);
+            CleanData();
+        });
+    }
+
+    public void SetData(InventorySlotView inventorySlotView)
+    {
+        heldSlot = inventorySlotView;
+
+        iconPreview.sprite = heldSlot.ItemConfig.Icon;
+        nameText.text = heldSlot.ItemConfig.ItemName;
+        typeText.text = heldSlot.ItemConfig.Type.ToString();
+        descriptionText.text = heldSlot.ItemConfig.ItemDescription;
+
+        useItemButton.gameObject.SetActive(heldSlot.ItemConfig.Type == ItemConfig.ItemType.Consumable);
 
         iconPreview.enabled = true;
     }
 
     public void CleanData()
     {
+        heldSlot = null;
         iconPreview.enabled = false;
 
         iconPreview.sprite = null;
         nameText.text = string.Empty;
+        typeText.text = string.Empty;
         descriptionText.text = string.Empty;
+
+        useItemButton.gameObject.SetActive(false);
     }
     #endregion
 }
