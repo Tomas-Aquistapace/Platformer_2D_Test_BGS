@@ -1,10 +1,18 @@
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventorySlotView : MonoBehaviour
 {
     #region EXPOSED_FIELDS
+    [SerializeField] private List<ItemConfig.ItemType> suportedItems = null;
+    [Space]
+    [SerializeField] private Image frameImage = null;
     [SerializeField] private Image icon = null;
+    [Space]
+    [SerializeField] private Sprite highlightedFrame = null;
+    [SerializeField] private Sprite defaultFrame = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -17,6 +25,11 @@ public class InventorySlotView : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
+    public bool CanContainItem(ItemConfig.ItemType itemType)
+    {
+        return suportedItems.Contains(itemType);
+    }
+
     public void SetItem(ItemConfig itemConfig)
     {
         if(itemConfig == null)
@@ -34,9 +47,5 @@ public class InventorySlotView : MonoBehaviour
         itemConfig = null;
         icon.enabled = false;
     }
-    #endregion
-
-    #region PRIVATE_METHODS
-
     #endregion
 }

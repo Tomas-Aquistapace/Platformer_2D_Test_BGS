@@ -42,7 +42,7 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
         itemViews[2].SetItem(testItemConfig);
         itemViews[4].SetItem(testItemCoffeConfig);
-        itemViews[10].SetItem(testItemCupConfig);
+        itemViews[8].SetItem(testItemCupConfig);
 
         tooltipView.Configure(UseItem);
     }
@@ -96,16 +96,24 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
             else
             {
-                InventorySlotView slot = eventData.pointerCurrentRaycast.gameObject.GetComponent<InventorySlotView>();
+                InventorySlotView selectedSlot = eventData.pointerCurrentRaycast.gameObject.GetComponent<InventorySlotView>();
 
-                if (slot != null)
+                if (selectedSlot != null)
                 {
-                    heldSlot.RemoveItem();
-                    heldSlot.SetItem(slot.ItemConfig);
-                    heldSlot = null;
+                    if (selectedSlot.CanContainItem(heldItem.Type))
+                    {
+                        heldSlot.RemoveItem();
+                        heldSlot.SetItem(selectedSlot.ItemConfig);
+                        heldSlot = null;
 
-                    slot.SetItem(heldItem);
-                    heldItem = null;
+                        selectedSlot.SetItem(heldItem);
+                        heldItem = null;
+                    }
+                    else
+                    {
+                        heldSlot = null;
+                        heldItem = null;
+                    }
                 }
             }
 

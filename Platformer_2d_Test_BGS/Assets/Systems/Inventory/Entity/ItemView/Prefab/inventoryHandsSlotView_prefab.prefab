@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 75, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8200414413543960155
 CanvasRenderer:
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 5849070082212064820}
   - component: {fileID: 1410356788696561693}
   m_Layer: 5
-  m_Name: inventorySlotView_prefab
+  m_Name: inventoryHandsSlotView_prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,7 +112,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 150}
+  m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7434905114437451375
 CanvasRenderer:
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0f27c7ca11936a641855752d611fcfbb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a16a48c30521c484fa0bf6c2791fc088, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27046853358441e4388be27f38d2f8f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  suportedItems: 000000000100000002000000
+  suportedItems: 0100000002000000
   frameImage: {fileID: 5849070082212064820}
   icon: {fileID: 6440091080814987378}
   highlightedFrame: {fileID: 21300000, guid: a16a48c30521c484fa0bf6c2791fc088, type: 3}
