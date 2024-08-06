@@ -1,26 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InventoryView : MonoBehaviour
 {
     #region EXPOSED_FIELDS
-    [SerializeField] private TooltipView tooltipView = null;
-    [Space]
-    [SerializeField] private Transform itemsParent = null;
-    [SerializeField] private GameObject itemViewPrefab = null;
+    [SerializeField] private Transform slotsParent = null;
+    [SerializeField] private GameObject slotViewPrefab = null;
     #endregion
 
     #region PUBLIC_METHODS
-    public ItemView InstantiateItemView()
+    public InventorySlotView InstantiateItemView()
     {
-        ItemView itemView = Instantiate(itemViewPrefab, itemsParent).GetComponent<ItemView>();
+        InventorySlotView itemView = Instantiate(slotViewPrefab, slotsParent).GetComponent<InventorySlotView>();
         return itemView;
-    }
-
-    public void SetTooltipData(Sprite image, string name, string description)
-    {
-        tooltipView.SetTooltipData(image, name, description);
     }
     #endregion
 }

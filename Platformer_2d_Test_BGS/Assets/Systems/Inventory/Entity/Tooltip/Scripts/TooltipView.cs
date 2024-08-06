@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,11 +12,22 @@ public class TooltipView : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void SetTooltipData(Sprite image, string name, string description)
+    public void SetData(Sprite image, string name, string description)
     {
         iconPreview.sprite = image;
         nameText.text = name;
         descriptionText.text = description;
+
+        iconPreview.enabled = true;
+    }
+
+    public void CleanData()
+    {
+        iconPreview.enabled = false;
+
+        iconPreview.sprite = null;
+        nameText.text = string.Empty;
+        descriptionText.text = string.Empty;
     }
     #endregion
 }
