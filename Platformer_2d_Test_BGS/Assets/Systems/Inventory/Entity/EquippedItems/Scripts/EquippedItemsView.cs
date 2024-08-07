@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EquippedItemsView : MonoBehaviour
@@ -14,6 +12,10 @@ public class EquippedItemsView : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-
+    public void SetUpInitialItems(ItemConfig left, ItemConfig right)
+    {
+        leftInventorySlot.SetItem(left);
+        rightInventorySlot.SetItem(right);
+    }
     #endregion
 }

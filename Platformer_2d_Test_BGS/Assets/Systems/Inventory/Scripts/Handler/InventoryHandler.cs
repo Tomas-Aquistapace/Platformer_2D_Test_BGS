@@ -7,22 +7,18 @@ using UnityEngine.EventSystems;
 public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     #region EXPOSED_FIELDS
-    [SerializeField] private InventoryView inventoryView = null;
+    [SerializeField] private EquippedItemsView equippedItemsView = null;
     [SerializeField] private TooltipView tooltipView = null;
     [SerializeField] private DragDropItemView dragDropItemView = null;
-
-    [Header("TEST DATA")]
-    [SerializeField] private ItemConfig testItemConfig = null;
-    [SerializeField] private ItemConfig testItemCoffeConfig = null;
-    [SerializeField] private ItemConfig testItemCupConfig = null;
     [Space]
+    [SerializeField] private List<InventorySlotView> itemSlotViews = null;
+
+    [Header("Input Values")]
     [SerializeField] private float pressDetection = 0.3f;
     [SerializeField] private int inventoryAmount = 20;
     #endregion
 
     #region PRIVATE_FIELDS
-    private List<InventorySlotView> itemViews = null;
-
     private ItemConfig heldItem = null;
     private InventorySlotView heldSlot = null;
 
@@ -31,22 +27,6 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     #endregion
 
     #region UNITY_METHODS
-    private void Awake()
-    {
-        itemViews = new List<InventorySlotView>();
-
-        for (int i = 0; i < inventoryAmount; i++)
-        {
-            itemViews.Add(inventoryView.InstantiateItemView());
-        }
-
-        itemViews[2].SetItem(testItemConfig);
-        itemViews[4].SetItem(testItemCoffeConfig);
-        itemViews[8].SetItem(testItemCupConfig);
-
-        tooltipView.Configure(UseItem);
-    }
-
     private void Update()
     {
         dragDropItemView.UpdateImage();
@@ -123,13 +103,24 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     #endregion
 
     #region PUBLIC_METHODS
-    private void UseItem(InventorySlotView inventorySlotView)
+    public void Initialize(PlayerInventoryData data)
     {
-        inventorySlotView.RemoveItem();
+        for (int i = 0; i < data.InventoryItems.Count; i++)
+        {
+            itemSlotViews[i].SetItem(data.InventoryItems[i]);
+        }
+
+        equippedItemsView.SetUpInitialItems(data.LeftHand, data.RightHand);
+        tooltipView.Configure(UseItem);
     }
     #endregion
 
     #region PRIVATE_METHODS
+    private void UseItem(InventorySlotView inventorySlotView)
+    {
+        inventorySlotView.RemoveItem();
+    }
+
     private IEnumerator TimerController()
     {
         pointerTime = 0;

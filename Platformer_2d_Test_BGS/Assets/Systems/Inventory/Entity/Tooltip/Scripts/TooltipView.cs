@@ -13,6 +13,7 @@ public class TooltipView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText = null;
     [Space]
     [SerializeField] private Button useItemButton = null;
+    [SerializeField] private Button removeItemButton = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -25,6 +26,11 @@ public class TooltipView : MonoBehaviour
         useItemButton.onClick.AddListener(() =>
         {
             onUseItem.Invoke(heldSlot);
+            CleanData();
+        });
+
+        removeItemButton.onClick.AddListener(() =>
+        {
             CleanData();
         });
     }
