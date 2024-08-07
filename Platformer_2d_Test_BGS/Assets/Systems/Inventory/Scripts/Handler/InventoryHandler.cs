@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,7 +13,8 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private DragDropItemView dragDropItemView = null;
     [Space]
     [SerializeField] private List<InventorySlotView> itemSlotViews = null;
-
+    [Space]
+    [SerializeField] private GameObject inventoryHolder = null;
     [Header("Input Values")]
     [SerializeField] private float pressDetection = 0.3f;
     [SerializeField] private int inventoryAmount = 20;
@@ -24,12 +26,15 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private bool onPointerUp = false;
     private float pointerTime = 0;
+
+    private Action onPlayerStop = null;
     #endregion
 
     #region UNITY_METHODS
     private void Update()
     {
         dragDropItemView.UpdateImage();
+        InputInteraction();
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -103,12 +108,14 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     #endregion
 
     #region PUBLIC_METHODS
-    public void Initialize(PlayerInventoryData data)
+    public void Initialize(PlayerInventoryData data, Action onPlayerStop)
     {
-        for (int i = 0; i < data.InventoryItems.Count; i++)
-        {
-            itemSlotViews[i].SetItem(data.InventoryItems[i]);
-        }
+        //for (int i = 0; i < data.InventoryItems.Count; i++)
+        //{
+        //    itemSlotViews[i].SetItem(data.InventoryItems[i]);
+        //}
+
+        this.onPlayerStop = onPlayerStop;
 
         equippedItemsView.SetUpInitialItems(data.LeftHand, data.RightHand);
         tooltipView.Configure(UseItem);
@@ -116,6 +123,15 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     #endregion
 
     #region PRIVATE_METHODS
+    private void InputInteraction()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            onPlayerStop.Invoke();
+            inventoryHolder.SetActive(!inventoryHolder.activeSelf);
+        }
+    }
+
     private void UseItem(InventorySlotView inventorySlotView)
     {
         inventorySlotView.RemoveItem();
