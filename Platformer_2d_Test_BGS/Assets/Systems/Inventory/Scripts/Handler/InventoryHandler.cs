@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -15,13 +16,14 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [SerializeField] private List<InventorySlotView> itemSlotViews = null;
     [Space]
     [SerializeField] private GameObject inventoryHolder = null;
+    [SerializeField] private Button saveInventoryButton = null;
     [Header("Input Values")]
     [SerializeField] private float pressDetection = 0.3f;
     [SerializeField] private int inventoryAmount = 20;
     #endregion
 
     #region PRIVATE_FIELDS
-    private ItemConfig heldItem = null;
+    private ItemData heldItem = null;
     private InventorySlotView heldSlot = null;
 
     private bool onPointerUp = false;
@@ -48,7 +50,7 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             if(slot != null && slot.HasItem)
             {
                 heldSlot = slot;
-                heldItem = slot.ItemConfig;
+                heldItem = slot.ItemData;
                 StartCoroutine(TimerController());
             }
             else
@@ -88,7 +90,7 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
                     if (selectedSlot.CanContainItem(heldItem.Type))
                     {
                         heldSlot.RemoveItem();
-                        heldSlot.SetItem(selectedSlot.ItemConfig);
+                        heldSlot.SetItem(selectedSlot.ItemData);
                         heldSlot = null;
 
                         selectedSlot.SetItem(heldItem);
@@ -108,20 +110,48 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     #endregion
 
     #region PUBLIC_METHODS
-    public void Initialize(PlayerInventoryData data, Action onPlayerStop)
+    public void Initialize(ItemsInGameConfig itemsInGameConfig, PlayerInventoryData data, Action onPlayerStop)
     {
-        //for (int i = 0; i < data.InventoryItems.Count; i++)
-        //{
-        //    itemSlotViews[i].SetItem(data.InventoryItems[i]);
-        //}
+        if (data != null)
+        {
+            for (int i = 0; i < data.InventoryItems.Count; i++)
+            {
+                ItemConfig config = itemsInGameConfig.GetItemByName(data.InventoryItems[i]);
+
+                if (config != null)
+                {
+                    ItemData itemData = new ItemData(config.Icon, config.Type, config.ItemName, config.ItemDescription);
+                    itemSlotViews[i].SetItem(itemData);
+                }
+            }
+            ItemConfig leftItem = itemsInGameConfig.GetItemByName(data.LeftHand);
+            ItemData leftData = null;
+            if (leftItem != null)
+            {
+                leftData = new ItemData(leftItem.Icon, leftItem.Type, leftItem.ItemName, leftItem.ItemDescription);
+            }
+            
+            ItemConfig rightItem = itemsInGameConfig.GetItemByName(data.RightHand);
+            ItemData rightData = null;
+            if (rightItem != null)
+            {
+                rightData = new ItemData(rightItem.Icon, rightItem.Type, rightItem.ItemName, rightItem.ItemDescription);
+            }
+
+            equippedItemsView.SetUpInitialItems(leftData, rightData);
+        }
 
         this.onPlayerStop = onPlayerStop;
 
-        equippedItemsView.SetUpInitialItems(data.LeftHand, data.RightHand);
         tooltipView.Configure(UseItem);
+
+        saveInventoryButton.onClick.AddListener(() =>
+        {
+            SaveInventory();
+        });
     }
 
-    public void AddItemInInventory(ItemConfig newItem)
+    public void AddItemInInventory(ItemData newItem)
     {
         for (int i = 0; i < itemSlotViews.Count; i++)
         {
@@ -135,6 +165,36 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     #endregion
 
     #region PRIVATE_METHODS
+    private void SaveInventory()
+    {
+        PlayerInventoryData data = new PlayerInventoryData();
+        data.InventoryItems = new List<string>();
+
+        for (int i = 0; i < itemSlotViews.Count; i++)
+        {
+            if(itemSlotViews[i].ItemData != null)
+            {
+                data.InventoryItems.Add(itemSlotViews[i].ItemData.ItemName);
+            }
+            else
+            {
+                data.InventoryItems.Add(string.Empty);
+            }
+        }
+
+        if(equippedItemsView.LeftInventorySlot.ItemData != null)
+        {
+            data.LeftHand = equippedItemsView.LeftInventorySlot.ItemData.ItemName;
+        }
+
+        if(equippedItemsView.RightInventorySlot.ItemData != null)
+        {
+            data.RightHand = equippedItemsView.RightInventorySlot.ItemData.ItemName;
+        }
+
+        SaveSystem.SaveInventory(data);
+    }
+
     private void InputInteraction()
     {
         if(Input.GetKeyDown(KeyCode.Escape))

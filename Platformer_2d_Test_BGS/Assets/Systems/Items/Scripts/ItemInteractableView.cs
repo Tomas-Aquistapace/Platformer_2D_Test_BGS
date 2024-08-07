@@ -11,7 +11,9 @@ public class ItemInteractableView : MonoBehaviour
     {
         if (collision.transform.tag == "Player")
         {
-            collision.gameObject.GetComponent<PlayerController>().OnAddItemInInventory(itemConfig);
+            ItemData itemData = new ItemData(itemConfig.Icon, itemConfig.Type, itemConfig.ItemName, itemConfig.ItemDescription);
+
+            collision.gameObject.GetComponent<PlayerController>().OnAddItemInInventory(itemData);
             Destroy(gameObject);
         }        
     }

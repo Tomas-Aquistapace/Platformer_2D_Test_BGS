@@ -5,6 +5,8 @@ public class GameController : MonoBehaviour
     #region EXPOSED_FIELDS
     [SerializeField] private InventoryHandler inventoryHandler = null;
     [SerializeField] private PlayerController playerController = null;
+    [Space]
+    [SerializeField] private ItemsInGameConfig itemsInGameConfig = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -21,10 +23,10 @@ public class GameController : MonoBehaviour
     #region PRIVATE_METHODS
     private void Initialize()
     {
-        PlayerInventoryData inventoryData = new PlayerInventoryData();
+        PlayerInventoryData inventoryData = SaveSystem.LoadInventory();
 
         playerController.Initialize(inventoryHandler.AddItemInInventory);
-        inventoryHandler.Initialize(inventoryData, playerController.EnableMovement);
+        inventoryHandler.Initialize(itemsInGameConfig, inventoryData, playerController.EnableMovement);
     }
     #endregion
 }

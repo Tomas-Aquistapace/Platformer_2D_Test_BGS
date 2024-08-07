@@ -16,12 +16,12 @@ public class InventorySlotView : MonoBehaviour
     #endregion
 
     #region PRIVATE_FIELDS
-    private ItemConfig itemConfig = null;
+    private ItemData itemData = null;
     #endregion
 
     #region PROPERTIES
-    public bool HasItem { get => itemConfig != null; }
-    public ItemConfig ItemConfig { get => itemConfig; }
+    public bool HasItem { get => itemData != null; }
+    public ItemData ItemData { get => itemData; }
     #endregion
 
     #region PUBLIC_METHODS
@@ -30,21 +30,21 @@ public class InventorySlotView : MonoBehaviour
         return suportedItems.Contains(itemType);
     }
 
-    public void SetItem(ItemConfig itemConfig)
+    public void SetItem(ItemData itemConfig)
     {
         if(itemConfig == null)
         {
             return;
         }
 
-        this.itemConfig = itemConfig;
+        this.itemData = itemConfig;
         icon.sprite = itemConfig.Icon;
         icon.enabled = true;
     }
 
     public void RemoveItem()
     {
-        itemConfig = null;
+        itemData = null;
         icon.enabled = false;
     }
     #endregion

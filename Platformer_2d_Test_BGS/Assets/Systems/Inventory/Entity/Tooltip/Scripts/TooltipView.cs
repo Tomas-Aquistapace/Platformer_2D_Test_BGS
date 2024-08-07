@@ -39,12 +39,12 @@ public class TooltipView : MonoBehaviour
     {
         heldSlot = inventorySlotView;
 
-        iconPreview.sprite = heldSlot.ItemConfig.Icon;
-        nameText.text = heldSlot.ItemConfig.ItemName;
-        typeText.text = heldSlot.ItemConfig.Type.ToString();
-        descriptionText.text = heldSlot.ItemConfig.ItemDescription;
+        iconPreview.sprite = heldSlot.ItemData.Icon;
+        nameText.text = heldSlot.ItemData.ItemName;
+        typeText.text = heldSlot.ItemData.Type.ToString();
+        descriptionText.text = heldSlot.ItemData.ItemDescription;
 
-        useItemButton.gameObject.SetActive(heldSlot.ItemConfig.Type == ItemConfig.ItemType.Consumable);
+        useItemButton.gameObject.SetActive(heldSlot.ItemData.Type == ItemConfig.ItemType.Consumable);
 
         iconPreview.enabled = true;
     }

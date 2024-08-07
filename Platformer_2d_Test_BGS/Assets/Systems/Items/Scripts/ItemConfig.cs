@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "StandardItem", menuName = "Items/StandardItem")]
@@ -22,9 +23,5 @@ public class ItemConfig : ScriptableObject
     public ItemType Type { get => type; }
     public string ItemName { get => itemName; }
     public string ItemDescription { get => itemDescription; }
-    #endregion
-
-    #region BASE_METHODS
-    public virtual void UseItem() { }
     #endregion
 }

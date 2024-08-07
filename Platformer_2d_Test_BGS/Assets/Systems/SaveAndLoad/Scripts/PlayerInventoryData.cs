@@ -1,16 +1,18 @@
+using System;
 using System.Collections.Generic;
 
+[Serializable]
 public class PlayerInventoryData
 {
     #region PRIVATE_FIELDS
-    private List<ItemConfig> inventoryItems = null;
-    private ItemConfig leftHand = null;
-    private ItemConfig rightHand = null;
+    private List<string> inventoryItems = new List<string>();
+    private string leftHand = string.Empty;
+    private string rightHand = string.Empty;
     #endregion
 
     #region PROPERTIES
-    public List<ItemConfig> InventoryItems { get => inventoryItems; set => inventoryItems = value; }
-    public ItemConfig LeftHand { get => leftHand; set => leftHand = value; }
-    public ItemConfig RightHand { get => rightHand; set => rightHand = value; }
+    public List<string> InventoryItems { get => inventoryItems; set => inventoryItems = value; }
+    public string LeftHand { get => leftHand; set => leftHand = value; }
+    public string RightHand { get => rightHand; set => rightHand = value; }
     #endregion
 }
