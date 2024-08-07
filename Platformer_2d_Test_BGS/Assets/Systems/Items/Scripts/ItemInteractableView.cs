@@ -3,7 +3,12 @@ using UnityEngine;
 public class ItemInteractableView : MonoBehaviour
 {
     #region EXPOSED_FIELDS
+    [SerializeField] private Animator animator = null;
     [SerializeField] private ItemConfig itemConfig = null;
+    #endregion
+
+    #region CONSTANTS
+    private const string destroyTrigger = "Destroy";
     #endregion
 
     #region UNITY_METHODS
@@ -13,9 +18,18 @@ public class ItemInteractableView : MonoBehaviour
         {
             ItemData itemData = new ItemData(itemConfig.Icon, itemConfig.Type, itemConfig.ItemName, itemConfig.ItemDescription);
 
-            collision.gameObject.GetComponent<PlayerController>().OnAddItemInInventory(itemData);
-            Destroy(gameObject);
+            if (collision.gameObject.GetComponent<PlayerController>().OnAddItemInInventory(itemData))
+            {
+                animator.SetTrigger(destroyTrigger);
+            }
         }        
+    }
+    #endregion
+
+    #region ANIMATION_METHODS
+    private void OnDestroyItem()
+    {
+        Destroy(gameObject);
     }
     #endregion
 }

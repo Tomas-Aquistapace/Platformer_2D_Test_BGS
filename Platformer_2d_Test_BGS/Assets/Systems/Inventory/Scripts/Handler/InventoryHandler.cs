@@ -17,9 +17,13 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     [Space]
     [SerializeField] private GameObject inventoryHolder = null;
     [SerializeField] private Button saveInventoryButton = null;
+
     [Header("Input Values")]
     [SerializeField] private float pressDetection = 0.3f;
     [SerializeField] private int inventoryAmount = 20;
+
+    [Header("Audio Values")]
+    [SerializeField] private AudioSource audioSource = null;
     #endregion
 
     #region PRIVATE_FIELDS
@@ -73,6 +77,8 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         {
             tooltipView.SetData(heldSlot);
             heldItem = null;
+
+            audioSource.Play();
         }
         else
         {
@@ -105,6 +111,8 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             }
 
             dragDropItemView.ClearImage();
+
+            audioSource.Play();
         }
     }
     #endregion
@@ -151,16 +159,18 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         });
     }
 
-    public void AddItemInInventory(ItemData newItem)
+    public bool AddItemInInventory(ItemData newItem)
     {
         for (int i = 0; i < itemSlotViews.Count; i++)
         {
             if (!itemSlotViews[i].HasItem)
             {
                 itemSlotViews[i].SetItem(newItem);
-                return;
+                return true;
             }
         }
+
+        return false;
     }
     #endregion
 

@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     private float horizontal = 0f;
     private bool enableMovement = true;
 
-    private Action<ItemData> onAddItemInInventory = null;
+    private Func<ItemData, bool> onAddItemInInventory = null;
     #endregion
 
     #region CONSTANTS
@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PROPERTIES
-    public Action<ItemData> OnAddItemInInventory { get => onAddItemInInventory; }
+    public Func<ItemData, bool> OnAddItemInInventory { get => onAddItemInInventory; }
     #endregion
 
     #region UNITY_METHODS
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
-    public void Initialize(Action<ItemData> onAddItemInInventory)
+    public void Initialize(Func<ItemData, bool> onAddItemInInventory)
     {
         this.onAddItemInInventory = onAddItemInInventory;
     }

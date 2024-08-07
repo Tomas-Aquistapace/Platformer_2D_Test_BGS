@@ -31,6 +31,7 @@ public class TooltipView : MonoBehaviour
 
         removeItemButton.onClick.AddListener(() =>
         {
+            heldSlot.RemoveItem();
             CleanData();
         });
     }
@@ -45,6 +46,7 @@ public class TooltipView : MonoBehaviour
         descriptionText.text = heldSlot.ItemData.ItemDescription;
 
         useItemButton.gameObject.SetActive(heldSlot.ItemData.Type == ItemConfig.ItemType.Consumable);
+        removeItemButton.gameObject.SetActive(true);
 
         iconPreview.enabled = true;
     }
@@ -60,6 +62,7 @@ public class TooltipView : MonoBehaviour
         descriptionText.text = string.Empty;
 
         useItemButton.gameObject.SetActive(false);
+        removeItemButton.gameObject.SetActive(false);
     }
     #endregion
 }
