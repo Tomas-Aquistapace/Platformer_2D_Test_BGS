@@ -120,6 +120,18 @@ public class InventoryHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         equippedItemsView.SetUpInitialItems(data.LeftHand, data.RightHand);
         tooltipView.Configure(UseItem);
     }
+
+    public void AddItemInInventory(ItemConfig newItem)
+    {
+        for (int i = 0; i < itemSlotViews.Count; i++)
+        {
+            if (!itemSlotViews[i].HasItem)
+            {
+                itemSlotViews[i].SetItem(newItem);
+                return;
+            }
+        }
+    }
     #endregion
 
     #region PRIVATE_METHODS

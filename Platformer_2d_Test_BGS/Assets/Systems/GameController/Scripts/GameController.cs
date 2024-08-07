@@ -23,6 +23,7 @@ public class GameController : MonoBehaviour
     {
         PlayerInventoryData inventoryData = new PlayerInventoryData();
 
+        playerController.Initialize(inventoryHandler.AddItemInInventory);
         inventoryHandler.Initialize(inventoryData, playerController.EnableMovement);
     }
     #endregion

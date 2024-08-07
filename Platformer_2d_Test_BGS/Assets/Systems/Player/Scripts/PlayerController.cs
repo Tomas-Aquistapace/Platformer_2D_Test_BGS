@@ -17,11 +17,17 @@ public class PlayerController : MonoBehaviour
     #region PRIVATE_FIELDS
     private float horizontal = 0f;
     private bool enableMovement = true;
+
+    private Action<ItemConfig> onAddItemInInventory = null;
     #endregion
 
     #region CONSTANTS
     private const string jumpingTrigger = "Jumping";
     private const string moveTrigger = "Move";
+    #endregion
+
+    #region PROPERTIES
+    public Action<ItemConfig> OnAddItemInInventory { get => onAddItemInInventory; }
     #endregion
 
     #region UNITY_METHODS
@@ -42,6 +48,11 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region PUBLIC_METHODS
+    public void Initialize(Action<ItemConfig> onAddItemInInventory)
+    {
+        this.onAddItemInInventory = onAddItemInInventory;
+    }
+
     public void EnableMovement()
     {
         enableMovement = !enableMovement;
